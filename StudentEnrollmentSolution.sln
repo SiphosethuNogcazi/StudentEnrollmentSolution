@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentEnrollment.Api", "St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentEnrollment.Client", "..\StudentEnrollment.Client\StudentEnrollment.Client.csproj", "{EFF8752B-0F36-453D-8FE1-0C7CA69A39FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentEnrollment.Tests", "StudentEnrollment.Tests\StudentEnrollment.Tests.csproj", "{CDC77FD9-3A2A-4A05-9925-15900DE92F24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EFF8752B-0F36-453D-8FE1-0C7CA69A39FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFF8752B-0F36-453D-8FE1-0C7CA69A39FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFF8752B-0F36-453D-8FE1-0C7CA69A39FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDC77FD9-3A2A-4A05-9925-15900DE92F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC77FD9-3A2A-4A05-9925-15900DE92F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC77FD9-3A2A-4A05-9925-15900DE92F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC77FD9-3A2A-4A05-9925-15900DE92F24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
