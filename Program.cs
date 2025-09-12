@@ -99,7 +99,10 @@ using (var scope = app.Services.CreateScope())
         context.Courses.AddRange(
             new Course { Title = "Introduction to Blazor", Description = "Learn the basics of Blazor WebAssembly." },
             new Course { Title = "Advanced C#", Description = "Deep dive into advanced C# concepts." },
-            new Course { Title = "Entity Framework Core", Description = "Master EF Core with hands-on projects." }
+            new Course { Title = "Entity Framework Core", Description = "Master EF Core with hands-on projects." },
+            new Course { Title = "Introduction to Angular", Description = "Learn the basics of Angular WebAssembly." },
+            new Course { Title = "Advanced HTML", Description = "Deep dive into advanced HTML concepts." },
+            new Course { Title = "Essentials of React.js", Description = "React.js with hands-on projects." }
         );
         context.SaveChanges();
     }
