@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using StudentEnrollment.Api.Models;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,48 +22,66 @@ namespace StudentEnrollment.Api.Controllers
             _config = config;
         }
 
-        // ✅ Register endpoint
+        //Register 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> Register(RegisterDto model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var user = new IdentityUser
+            try
             {
-                UserName = model.Username,
-                Email = model.Username // using username as email for simplicity
-            };
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+                var user = new IdentityUser
+                {
+                    UserName = model.Username,
+                    Email = model.Username // using username as email for simplicity
+                };
 
-            if (result.Succeeded)
-                return Ok(new { message = "User registered successfully" });
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-            // send identity errors back to client
-            return BadRequest(result.Errors.Select(e => e.Description));
-        }
+                if (result.Succeeded)
+                    return Ok(new { message = "User registered successfully" });
 
-        // ✅ Login endpoint
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
-        {
-            var user = await _userManager.FindByNameAsync(model.Username);
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                // send identity errors back to client
+                return BadRequest(result.Errors.Select(e => e.Description));
+            }
+            catch (Exception ex)
             {
-                var token = GenerateJwtToken(user);
-                return Ok(new { token });
+                return BadRequest(ex.Message);
             }
 
-            return Unauthorized(new { message = "Invalid login attempt" });
         }
 
-        // ✅ JWT Token generator
+        //login
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto model)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(model.Username);
+
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    var token = GenerateJwtToken(user);
+                    return Ok(new { token });
+                }
+
+                return Unauthorized(new { message = "Invalid login attempt" });
+            }
+            catch (Exception ex)
+            {
+
+                return Unauthorized(new { message = ex.Message });
+            }
+
+        }
+
+        //token
         private string GenerateJwtToken(IdentityUser user)
         {
-            var jwtKey = _config["Jwt:Key"] ?? "SuperSecretKey12345!";
-            var jwtIssuer = _config["Jwt:Issuer"] ?? "CourseEnrollmentIssuer";
+
+            var jwtKey = _config["Jwt:Key"] ?? "SiphosethuNogcazi";
+            var jwtIssuer = _config["Jwt:Issuer"] ?? "StudentEnrollmentIssuer";
 
             var claims = new[]
             {
@@ -84,31 +103,8 @@ namespace StudentEnrollment.Api.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+
+
         }
-    }
-
-    // ✅ DTOs for Register & Login
-    public class RegisterDto
-    {
-        [Required(ErrorMessage = "Username is required")]
-        [MinLength(3, ErrorMessage = "Username must be at least 3 characters long")]
-        public string Username { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
-        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
-        public string Password { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Confirm Password is required")]
-        [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string ConfirmPassword { get; set; } = string.Empty;
-    }
-
-    public class LoginDto
-    {
-        [Required(ErrorMessage = "Username is required")]
-        public string Username { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; } = string.Empty;
     }
 }
