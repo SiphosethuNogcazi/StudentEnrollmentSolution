@@ -34,7 +34,7 @@ namespace StudentEnrollment.Api.Controllers
                 var user = new IdentityUser
                 {
                     UserName = model.Username,
-                    Email = model.Username // using username as email for simplicity
+                    Email = model.Username 
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -42,7 +42,6 @@ namespace StudentEnrollment.Api.Controllers
                 if (result.Succeeded)
                     return Ok(new { message = "User registered successfully" });
 
-                // send identity errors back to client
                 return BadRequest(result.Errors.Select(e => e.Description));
             }
             catch (Exception ex)
@@ -51,8 +50,6 @@ namespace StudentEnrollment.Api.Controllers
             }
 
         }
-
-        //login
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto model)
         {
@@ -75,8 +72,6 @@ namespace StudentEnrollment.Api.Controllers
             }
 
         }
-
-        //token
         private string GenerateJwtToken(IdentityUser user)
         {
 
